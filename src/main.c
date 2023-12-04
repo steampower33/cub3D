@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 16:11:38 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/11/27 21:27:13 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/12/04 18:05:03 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -320,6 +320,49 @@ int	set_player_info(t_map_info *map)
 	return (SUCCESS);
 }
 
+void	dfs(t_map_info *map, size_t row, size_t col, char **cmap)
+{
+	static const int	delta[2][4] = {{0, 0, 1, -1}, {1, -1, 0, 0}};
+	size_t				index;
+	size_t				next_row;
+	size_t				next_row;
+
+	index = 0;
+	while (index < 4)
+	{
+		next_row = row + delta[0][index];
+		next_col = col + delta[1][index];
+		if (0 <= next_row && next_row < map->height
+			&& 0 <= next_col && next_col < ft_strlen(cmap[next_row])
+			&& cmap[next_row][next_col] == '1')
+		{
+			cmap[next_row][next_col] = map->dir_ch;
+			dfs(map, next_row, next_col, cmap);
+		}
+		++index;
+	}
+}
+
+int	is_wall(t_map_info *map, size_t row, size_t col)
+{
+	static const int	delta[2][4] = {{0, 0, 1, -1}, {1, -1, 0, 0}};
+	size_t				index;
+	char				**cmap;
+
+	cmap = map->cmap;
+	if (row == 0 || col == 0 || row == map->height - 1
+			|| col == ft_strlen(cmap[row] - 1))
+		return (FALSE);
+	index = 0;
+	while (index < 4)
+	{
+		if (ft_isspace(map[row + delta[0][index]][col + delta[1][index]]))
+			return (FALSE);
+		++index;
+	}
+	return (TRUE);
+}
+
 int	is_valid_map(t_map_info *map)
 {
 	size_t	row;
@@ -329,13 +372,16 @@ int	is_valid_map(t_map_info *map)
 	while (row < map->height)
 	{
 		col = 0;
-		while (m->cmap[row][col] && m->cmap[row][col] == ' ')
+		while (map->cmap[row][col] && ft_isspace(map->cmap[row][col]))
 			++col;
 		if (col == ft_strlen(map->cmap[row]))
 			return (FAILURE);
 		while (col < ft_strlen(m->cmap[row]))
 		{
-			if (map->cmap[row][col] == '1' && is_empty)
+			// ??
+			if (map->cmap[row][col] == '1' && is_wall(map, row, col))
+				dfs();
+				
 		}
 	}
 }
