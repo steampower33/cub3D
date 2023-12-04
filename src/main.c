@@ -78,10 +78,24 @@ int	parse_texture(char **token, char **info)
 		return (FAILURE);
 	if (info[index] != NULL)
 		return (FAILURE);
+	// need free
 	info[index] = ft_strdup(token[1]);
 	if (info[index] == NULL)
 		return (FAILURE);
 	return (SUCCESS);
+}
+
+void	free_double_pointer(char **string)
+{
+	size_t	index;
+
+	index = 0;
+	while (string[index])
+	{
+		free(string[index]);
+		++index;
+	}
+	free(string);
 }
 
 int	set_info(char **info, char *line)
@@ -93,6 +107,7 @@ int	set_info(char **info, char *line)
 		return (FAILURE);
 	if (parse_texture(token, info) == FAILURE)
 		return (FAILURE);
+	free_double_pointer(token);
 	return (SUCCESS);
 }
 
@@ -118,7 +133,7 @@ int	is_empty(char *line)
 	return (FALSE);
 }
 
-int	set_map_info(t_map_info *map, int fd)
+int	set_texture_info(t_map_info *map, int fd)
 {
 	int		index;
 	char	*line;
@@ -146,13 +161,224 @@ int	set_map_info(t_map_info *map, int fd)
 
 void	test(t_map_info *map)
 {
-	printf("width: %d, height: %d, ceil: %d, floor: %d, door: %d", map->width, map->height, map->ceilling, map->floor, map->door_status);
+	printf("width: %d, height: %d, ceil: %d, floor: %d, door: %d\n", map->width, map->height, map->ceilling, map->floor, map->door_status);
 	int i = 0;
 	while (i < 8)
 	{
 		printf("%s", map->info[i]);
 		i++;
 	}
+}
+
+int	create_node(char *line)
+{
+	t_node	*node;
+
+	node = (t_node *)malloc(sizeof(*node));
+	if (node == NULL)
+		return (FAILURE);
+	node->content = ft_strdup(line);
+	if (node->content == NULL)
+		return (FAILURE);
+	node->next = NULL;
+	node->length = 1;
+	return (node);
+
+}
+
+int	lstadd_node(struct s_node **list, char *line)
+{
+	t_node	*node;
+	t_node	*head;
+	t_node	*tail;
+
+	head = *list;
+	node = create_node(line);
+	if (node == NULL)
+		return (FAILURE);
+	if (head == NULL)
+	{
+		*list = node;
+		return (SUCCESS);
+	}
+	tail = head;
+	while (tail->next)
+		tail = tail->next;
+	tail->next = node;
+	head->size += 1;
+	return (SUCCESS);
+}
+
+char	**list_to_str(t_node *list)
+{
+	char		**result;
+	t_node		*node;
+	size_t		index;
+
+	node = list;
+	result = (char **)malloc(sizeof(char *) * (list->length + 1));
+	if (result == NULL)
+		return (NULL);
+	index = 0;
+	while (node)
+	{
+		result[index] = ft_strdup(node->content);
+		if (result[index] == NULL)
+		{
+			free_double_pointer(result);
+			return (NULL);
+		}
+		node = node->next;
+		++index;
+	}
+	result[index] = NULL;
+	return (result);
+}
+
+void	str_to_int(int	*dest, char *src, char p)
+{
+	size_t	index;
+
+	index = 0;
+	while (src[index])
+	{
+		if (src[index] == p)
+			dest[index] = 1;
+		else if (ft_isdigit(src[index]) == TRUE)
+			dest[index] = (int)(src[index] - '0');
+		++index;
+	}
+}
+
+int	**set_matrix(t_map_info *map)
+{
+	int		**result;
+	size_t	index;
+
+	result = (int **)malloc(sizeof(int *) * list->length);
+	if (result == NULL)
+		return (NULL);
+	index = 0;
+	while (index < list->length)
+	{
+		result[index] = (int *)malloc(sizeof(int) * map->width);
+		if (result[index] == NULL)
+		{
+			free_double_pointer(result);
+			return (NULL);
+		}
+		str_to_int(result[index], map->cmap(index), map->dir_ch);
+		++index;
+	}
+	return (result);
+}
+
+int	get_width(char **line)
+{
+	int		max_width;
+	int		len;
+	size_t	index;
+
+	max_width = 0;
+	index = 0;
+	while (line[index])
+	{
+		len = ft_strlen(line[index]);
+		if (max_width < len)
+			max_width = len;
+		++index;
+	}
+	return (max_width);
+}
+
+int	set_player_info(t_map_info *map)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	while (map->cmap[i])
+	{
+		j = 0;
+		while (map->cmap[i][j])
+		{
+			if (ft_strchr("WESN", map->cmap[i][j]))
+			{
+				if (map->dir_ch == '\0')
+					set_player(map, i, j);
+				else
+					return (FAILURE);
+			}
+			else if (!ft_isdigit(map->cmap[i][j]) && !ft_isspace(map->cmap[i][j])
+				return (FAILURE);
+			++j;
+		}
+		++i;
+	}
+	if (map->dir_ch == '\0')
+		return (FAILURE);
+	return (SUCCESS);
+}
+
+int	is_valid_map(t_map_info *map)
+{
+	size_t	row;
+	size_t	col;
+
+	row = 0;
+	while (row < map->height)
+	{
+		col = 0;
+		while (m->cmap[row][col] && m->cmap[row][col] == ' ')
+			++col;
+		if (col == ft_strlen(map->cmap[row]))
+			return (FAILURE);
+		while (col < ft_strlen(m->cmap[row]))
+		{
+			if (map->cmap[row][col] == '1' && is_empty)
+		}
+	}
+}
+
+int	set_map(t_map_info *map, t_node list)
+{
+	map->height = list->length;
+	map->matrix = set_matrix(map);
+	if (map->matrix == NULL)
+		return (FAIURE);
+	map->cmap = list_to_str(list);
+	if (map->cmap == NULL)
+		return (FAILURE);
+	map->width = get_width(map->cmap);
+	if (set_player_info(map) == FAILURE)
+		return (FAILURE);
+	if (is_valid_map(map) == FAILURE)
+		return (FAILURE);
+}
+
+int	set_map_info(t_map_info *map, int fd)
+{
+	// exit here
+	char	*line;
+	t_node	*list;
+
+	list = NULL;
+	line = get_next_line(fd);
+	while (line && is_empty(line))
+		line = get_next_line(fd);
+	if (line == NULL)
+		error_exit("Failed set map\n", 1);
+	while (line)
+	{
+		if (is_empty(line) == TRUE || lstadd_node(&list, line) == FAILURE)
+		{
+			free_list(list);
+			return (FAILURE);
+		}
+		free(line);
+		line = get_next_line(fd);
+	}
+	set_map(map, list);
 }
 
 int	init_map(t_map_info *map, char *file)
@@ -162,6 +388,7 @@ int	init_map(t_map_info *map, char *file)
 	fd = get_fd(file);
 	if (fd == FAILURE)
 		error_exit("Can't open file error\n", 1);
+	set_texture_info(map, fd);
 	set_map_info(map, fd);
 	// test
 	test(map);

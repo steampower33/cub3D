@@ -36,6 +36,13 @@ enum	e_type
 	LINE_INFO,
 };
 
+typedef struct	s_node
+{
+	char*			content;
+	size_t			length;
+	struct s_node	*next;
+}t_node;
+
 typedef struct s_map_info
 {
 	int		width;
@@ -50,7 +57,7 @@ typedef struct s_map_info
 	double	plain_col;
 	double	dir_row;
 	double	dir_col;
-	int		**map;
+	int		**matrix;
 	char	*info[8];
 	char	**cmap;
 
