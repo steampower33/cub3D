@@ -6,7 +6,7 @@
 #    By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/13 16:31:06 by wooseoki          #+#    #+#              #
-#    Updated: 2023/11/27 21:24:25 by wooseoki         ###   ########.fr        #
+#    Updated: 2023/12/05 21:20:35 by wooseoki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,9 @@ SRCS = ft_split.c \
 		ft_strlen.c \
 		ft_strnstr.c \
 		ft_bzero.c \
+		ft_isdigit.c \
+		ft_strchr.c \
+		ft_isspace.c \
 		get_next_line.c \
 		get_next_line_utils.c \
 

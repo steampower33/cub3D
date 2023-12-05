@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 16:20:41 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/11/27 20:56:58 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/12/05 21:14:57 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ typedef struct	s_node
 	struct s_node	*next;
 }t_node;
 
-typedef struct s_map_info
+typedef struct s_map
 {
 	int		width;
 	int		height;
@@ -61,7 +61,7 @@ typedef struct s_map_info
 	char	*info[8];
 	char	**cmap;
 
-}t_map_info;
+}t_map;
 
 int	set_info(char **info, char *line);
 int	parse_texture(char **token, char **info);
