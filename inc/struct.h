@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 16:20:41 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/12/05 21:14:57 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/12/06 17:27:32 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include <math.h>
 #include "../libft/libft.h"
 #include "../libft/get_next_line.h"
 
@@ -36,6 +37,19 @@ enum	e_type
 	LINE_INFO,
 };
 
+enum	e_dir
+{
+	K_A = 0,
+	K_S = 1,
+	K_D = 2,
+	K_Q = 12,
+	K_W = 13,
+	K_E = 14,
+	K_ESC = 53,
+	K_LEFT = 123,
+	K_RIGHT = 124
+};
+
 typedef struct	s_node
 {
 	char*			content;
@@ -47,7 +61,7 @@ typedef struct s_map
 {
 	int		width;
 	int		height;
-	int		ceilling;
+	int		ceiling;
 	int		floor;
 	int		door_status;
 	char	dir_ch;
@@ -68,6 +82,6 @@ int	parse_texture(char **token, char **info);
 int	is_valid_file_name(char *file);
 int	is_empty(char *line);
 int	get_token_index(char *token);
-int	set_map_info(t_map_info *map, int fd);
+int	set_map_info(t_map *map, int fd);
 
 #endif

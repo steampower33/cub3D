@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 16:11:38 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/12/05 21:15:51 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/12/06 18:13:05 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,7 @@ int	set_texture_info(t_map *map, int fd)
 
 void	test(t_map *map)
 {
-	printf("width: %d, height: %d, ceil: %d, floor: %d, door: %d\n", map->width, map->height, map->ceilling, map->floor, map->door_status);
+	printf("width: %d, height: %d, ceil: %d, floor: %d, door: %d\n", map->width, map->height, map->ceiling, map->floor, map->door_status);
 	int i = 0;
 	while (i < 8)
 	{
@@ -251,23 +251,18 @@ void	str_to_int(int	*dest, char *src, char p)
 
 int	**set_matrix(t_map *map)
 {
-	int		**result;
-	size_t	index;
+	int	**result;
+	int	index;
 
-	// not map length
-	result = (int **)malloc(sizeof(int *) * map->length);
+	result = (int **)malloc(sizeof(int *) * map->height);
 	if (result == NULL)
 		return (NULL);
 	index = 0;
-	// too
-	while (index < map->length)
+	while (index < map->height)
 	{
 		result[index] = (int *)malloc(sizeof(int) * map->width);
 		if (result[index] == NULL)
-		{
-			free_double_pointer(result);
-			return (NULL);
-		}
+			error_exit("Set matrix failed\n", 1);
 		str_to_int(result[index], map->cmap[index], map->dir_ch);
 		++index;
 	}
@@ -292,29 +287,41 @@ int	get_width(char **line)
 	return (max_width);
 }
 
+void	set_player(t_map *map, char** row, char *col)
+{
+	char	**matrix;
+
+	matrix = map->cmap;
+	map->dir_ch = *col;
+	*col = '0';
+	map->player_row = (double)(row - matrix) + 0.5;
+	map->player_col = (double)(col - *row) + 0.5;
+}
+
 int	set_player_info(t_map *map)
 {
-	size_t	i;
-	size_t	j;
+	char	**row;
+	char	*col;
 
-	i = 0;
-	while (map->cmap[i])
+	row = map->cmap;
+	while (*row)
 	{
-		j = 0;
-		while (map->cmap[i][j])
+		col = *row;
+		while (*col)
 		{
-			if (ft_strchr("WESN", map->cmap[i][j]))
+			printf("%c", *col);
+			if (ft_strchr("WESN", *col))
 			{
 				if (map->dir_ch == '\0')
-					set_player(map, i, j);
+					set_player(map, row, col);
 				else
 					return (FAILURE);
 			}
-			else if (!ft_isdigit(map->cmap[i][j]) && !ft_isspace(map->cmap[i][j]))
+			else if (!ft_isdigit(*col) && !ft_isspace(*col))
 				return (FAILURE);
-			++j;
+			col += 1;
 		}
-		++i;
+		row += 1;
 	}
 	if (map->dir_ch == '\0')
 		return (FAILURE);
@@ -334,7 +341,7 @@ void	dfs(t_map *map, int row, int col, char **cmap)
 		next_row = row + delta[0][index];
 		next_col = col + delta[1][index];
 		if (0 <= next_row && next_row < map->height
-			&& 0 <= next_col && next_col < ft_strlen(cmap[next_row])
+			&& 0 <= next_col && next_col < (int)ft_strlen(cmap[next_row])
 			&& cmap[next_row][next_col] == '1')
 		{
 			cmap[next_row][next_col] = map->dir_ch;
@@ -344,7 +351,7 @@ void	dfs(t_map *map, int row, int col, char **cmap)
 	}
 }
 
-int	is_wall(t_map *map, int row, int col)
+int	not_empty(t_map *map, int row, int col)
 {
 	static const int	delta[2][4] = {{0, 0, 1, -1}, {1, -1, 0, 0}};
 	size_t				index;
@@ -352,16 +359,54 @@ int	is_wall(t_map *map, int row, int col)
 
 	cmap = map->cmap;
 	if (row == 0 || col == 0 || row == map->height - 1
-			|| col == ft_strlen(cmap[row] - 1))
+			|| col == (int)ft_strlen(cmap[row] - 1))
 		return (FALSE);
 	index = 0;
 	while (index < 4)
 	{
-		if (ft_isspace(map[row + delta[0][index]][col + delta[1][index]]))
+		if (ft_isspace(cmap[row + delta[0][index]][col + delta[1][index]]))
 			return (FALSE);
 		++index;
 	}
 	return (TRUE);
+}
+
+int	check_delta(t_map *map, int row, int col)
+{
+	static const int	delta[2][4] = {{0, 0, 1, -1}, {1, -1, 0, 0}};
+	char				**matrix;
+	char				c;
+	int					index;
+
+	c = '\0';
+	index = 0;
+	matrix = map->cmap;
+	while (index < 4)
+	{
+		if (col + delta[1][index] >= (int)ft_strlen(matrix[row + delta[0][index]]))
+			c = ' ';
+		else
+			c = matrix[row + delta[0][index]][col + delta[1][index]];
+		if (ft_isspace(c))
+		{
+			if (matrix[row][col] == map->dir_ch)
+				return (FALSE);
+			return (TRUE);
+		}
+		++index;
+	}
+	return (FALSE);
+}
+
+int	any_empty(t_map *map, int row, int col)
+{
+	char	**matrix;
+
+	matrix = map->cmap;
+	if (row == 0 || col == 0 || row == map->height - 1
+		|| col == ((int)ft_strlen(matrix[row]) - 1))
+		return (matrix[row][col] != map->dir_ch);
+	return (check_delta(map, row, col));
 }
 
 int	check_wall(t_map *map)
@@ -373,16 +418,20 @@ int	check_wall(t_map *map)
 	while (row < map->height)
 	{
 		col = 0;
-		while (col < ft_strlen(map->cmap[row]))
+		while (col < (int)ft_strlen(map->cmap[row]))
 		{
-			if (ft_isspace(map[row][col]))
+			if (ft_isspace(map->cmap[row][col]))
 			{
-				if (is_wall(map, row, col))
+				if (not_empty(map, row, col) == TRUE)
 					return (FALSE);
 			}
-			// else if (is_
+			else if (any_empty(map, row, col) == TRUE)
+				return (FALSE);
+			++col;
 		}
+		++row;
 	}
+	return (TRUE);
 }
 
 int	is_valid_map(t_map *map)
@@ -394,14 +443,13 @@ int	is_valid_map(t_map *map)
 	while (row < map->height)
 	{
 		col = 0;
-		while (map->cmap[row][col] && ft_isspace(map->cmap[row][col]))
+		while (map->cmap[row][col] && map->cmap[row][col] == ' ')
 			++col;
-		if (col == ft_strlen(map->cmap[row]))
-			return (FAILURE);
-		while (col < ft_strlen(map->cmap[row]))
+		if (col == (int)ft_strlen(map->cmap[row]))
+			return (FALSE);
+		while (col < (int)ft_strlen(map->cmap[row]))
 		{
-			// ??
-			if (map->cmap[row][col] == '1' && is_wall(map, row, col))
+			if (map->cmap[row][col] == '1' && not_empty(map, row, col))
 				dfs(map, row, col, map->cmap);
 			++col;
 		}
@@ -410,25 +458,68 @@ int	is_valid_map(t_map *map)
 	return (check_wall(map));
 }
 
-int	set_map(t_map *map, t_node list)
+int	get_color(char *info)
 {
-	map->height = list->length;
-	map->matrix = set_matrix(map);
-	if (map->matrix == NULL)
-		return (FAIURE);
+	char	**token;
+	int		index;
+	int		value;
+	int		ret;
+
+	token = ft_split(info, ',');
+	index = 0;
+	while (token[index])
+		++index;
+	if (index != 4)
+		error_exit("Color not valid\n", 1);
+	index = 0;
+	ret = 0;
+	while (index < 3)
+	{
+		value = ft_atoi(token[index]);
+		if (value == -1)
+			error_exit("Color not valid\n", 1);
+		ret = (ret << 8) | value;
+		++index;
+	}
+	free_double_pointer(token);
+	return (ret);
+}
+
+int	set_map(t_map *map, t_node *list)
+{
 	map->cmap = list_to_str(list);
 	if (map->cmap == NULL)
 		return (FAILURE);
+	map->height = list->length;
 	map->width = get_width(map->cmap);
+	map->matrix = set_matrix(map);
+	if (map->matrix == NULL)
+		return (FAILURE);
 	if (set_player_info(map) == FAILURE)
 		return (FAILURE);
-	if (is_valid_map(map) == FAILURE)
+	printf("3\n");
+	if (is_valid_map(map) == FALSE)
 		return (FAILURE);
+	printf("4\n");
+	map->floor = get_color(map->info[F]);
+	map->ceiling = get_color(map->info[C]);
+	return (SUCCESS);
+}
+
+void	free_list(t_node *list)
+{
+	t_node	*node;
+
+	while (list)
+	{
+		node = list;
+		list = list->next;
+		free(node);
+	}
 }
 
 int	set_map_info(t_map *map, int fd)
 {
-	// exit here
 	char	*line;
 	t_node	*list;
 
@@ -448,7 +539,45 @@ int	set_map_info(t_map *map, int fd)
 		free(line);
 		line = get_next_line(fd);
 	}
-	set_map(map, list);
+	return (set_map(map, list));
+}
+
+void	init_player(t_map *map)
+{
+	map->plain_row = 0;
+	map->plain_col = 0.67;
+	map->dir_row = -1;
+	map->dir_col = 0;
+	/*
+	if (map->dir_ch == 'S')
+		change_dir(map, K_RIGHT, M_PI_2);
+	else if (map->dir_ch == 'W')
+		change_dir(map, K_RIGHT, M_PI_2 * 2);
+	else if (map->dir_ch == 'N')
+		change_dir(map, K_RIGHT, M_PI_2 * 3);
+		*/
+}
+
+void	mirror(t_map *map)
+{
+	int	row;
+	int	col;
+	int	temp;
+
+	row = 0;
+	while (row < map->height)
+	{
+		col = 0;
+		while (col < map->width / 2)
+		{
+			temp = map->matrix[row][col];
+			map->matrix[row][col] = map->matrix[row][map->width - col - 1];
+			map->matrix[row][map->width -col - 1] = temp;
+			++col;
+		}
+		++row;
+	}
+	map->player_row = map->width - map->player_row;
 }
 
 int	init_map(t_map *map, char *file)
@@ -459,9 +588,13 @@ int	init_map(t_map *map, char *file)
 	if (fd == FAILURE)
 		error_exit("Can't open file error\n", 1);
 	set_texture_info(map, fd);
-	set_map_info(map, fd);
+	if (set_map_info(map, fd) == FAILURE)
+		error_exit("Set map info failed\n", 1);
+	init_player(map);
+	mirror(map);
 	// test
 	test(map);
+	close(fd);
 	return (SUCCESS);
 }
 
