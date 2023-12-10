@@ -1,0 +1,25 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    parse_mkfile                                       :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/12/10 22:21:03 by wooseoki          #+#    #+#              #
+#    Updated: 2023/12/10 22:29:11 by wooseoki         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+PAR_DIR		= src/parse
+PAR_SRC		= \
+			init_map.c init_player.c is_valid_map.c \
+			set_map.c set_map_info.c set_player_info.c set_texture.c \
+			check_fence.c mirror.c utils.c \
+
+PAR_OBJ_DIR	= obj/parse
+PAR_OBJ		= $(PAR_SRC:.c=.o)
+PAR_OBJS	= $(addprefix $(PAR_OBJ_DIR)/, $(PAR_OBJ))
+PAR_SRCS	= $(addprefix $(PAR_DIR)/, $(PAR_SRC))
+
+$(PAR_OBJ_DIR)/%.o : $(PAR_DIR)/%.c
+	@$(CC) -c $(CFLAGS) $< -o $@ $(CPPFLAGS)

@@ -1,26 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   mirror.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/19 16:11:38 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/12/10 23:02:14 by wooseoki         ###   ########.fr       */
+/*   Created: 2023/12/10 22:15:15 by wooseoki          #+#    #+#             */
+/*   Updated: 2023/12/10 22:15:43 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 
-int main(int argc, char **argv)
+void	mirror(t_map *map)
 {
-	t_map	map;
+	int	row;
+	int	col;
+	int	temp;
 
-	ft_bzero(&map, sizeof(map));
-	if (argc != 2)
+	row = 0;
+	while (row < map->height)
 	{
-		printf("usage: ./cub3D [map file]\n");
-		return (1);
+		col = 0;
+		while (col < map->width / 2)
+		{
+			temp = map->matrix[row][col];
+			map->matrix[row][col] = map->matrix[row][map->width - col - 1];
+			map->matrix[row][map->width -col - 1] = temp;
+			++col;
+		}
+		++row;
 	}
-	init_map(&map, argv[1]);
+	map->player_row = map->width - map->player_row;
 }

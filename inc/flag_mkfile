@@ -1,0 +1,32 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    flag_mkfile                                        :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/12/10 22:32:06 by wooseoki          #+#    #+#              #
+#    Updated: 2023/12/10 23:02:05 by wooseoki         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+NAME		= cub3D
+
+CC			= cc
+GFLAG		= g
+CFLAGS		= -Wall -Wextra -Werror
+CPPFLAGS	= -I inc
+RM			= rm
+RMFLAGS		= -rf
+
+LIBFT		= libft/libft.a
+LIB_DIR		= libft
+
+ALL_SRCS	= $(PAR_SRCS) src/main.c
+ALL_OBJS	= $(PAR_OBJS) obj/main.o
+
+obj/main.o : src/main.c
+	$(CC) -c $(CFLAGS) $< -o $@ $(CPPFLAGS)
+
+OBJ_DIR		= obj obj/parse
+SRC_DIR		= src src/parse

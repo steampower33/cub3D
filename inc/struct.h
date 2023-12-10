@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 16:20:41 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/12/06 17:27:32 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/12/10 22:19:19 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ enum	e_dir
 typedef struct	s_node
 {
 	char*			content;
-	size_t			length;
 	struct s_node	*next;
 }t_node;
 
@@ -76,12 +75,4 @@ typedef struct s_map
 	char	**cmap;
 
 }t_map;
-
-int	set_info(char **info, char *line);
-int	parse_texture(char **token, char **info);
-int	is_valid_file_name(char *file);
-int	is_empty(char *line);
-int	get_token_index(char *token);
-int	set_map_info(t_map *map, int fd);
-
 #endif
