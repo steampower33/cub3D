@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-.default_goal = all
+.DEFAULT_GOAL = all
 
 NAME = cub3D
 # MLX = ./mlx/libmlx.a

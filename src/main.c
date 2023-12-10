@@ -63,6 +63,29 @@ int	get_token_index(char *token)
 	return (-1);
 }
 
+int ft_strtrim(char *str)
+{
+	int		index;
+
+	if (str == NULL)
+		return (1);
+	index = ft_strlen(str);
+	if (index == 0)
+		return (0);
+	--index;
+	while (index)
+	{
+		if (ft_isspace(str[index]))
+		{
+			str[index] = '\0';
+			--index;
+		}
+		else
+			break ;
+	}
+	return (0);
+}
+
 int	parse_texture(char **token, char **info)
 {
 	int	index;
@@ -78,7 +101,7 @@ int	parse_texture(char **token, char **info)
 		return (FAILURE);
 	if (info[index] != NULL)
 		return (FAILURE);
-	// need free
+	ft_strtrim(token[1]);
 	info[index] = ft_strdup(token[1]);
 	if (info[index] == NULL)
 		return (FAILURE);
@@ -309,7 +332,6 @@ int	set_player_info(t_map *map)
 		col = *row;
 		while (*col)
 		{
-			printf("%c", *col);
 			if (ft_strchr("WESN", *col))
 			{
 				if (map->dir_ch == '\0')
@@ -355,16 +377,16 @@ int	not_empty(t_map *map, int row, int col)
 {
 	static const int	delta[2][4] = {{0, 0, 1, -1}, {1, -1, 0, 0}};
 	size_t				index;
-	char				**cmap;
+	char				**matrix;
 
-	cmap = map->cmap;
+	matrix = map->cmap;
 	if (row == 0 || col == 0 || row == map->height - 1
-			|| col == (int)ft_strlen(cmap[row] - 1))
+			|| col == (int)ft_strlen(matrix[row]) - 1)
 		return (FALSE);
 	index = 0;
 	while (index < 4)
 	{
-		if (ft_isspace(cmap[row + delta[0][index]][col + delta[1][index]]))
+		if (ft_isspace(matrix[row + delta[0][index]][col + delta[1][index]]))
 			return (FALSE);
 		++index;
 	}
@@ -378,7 +400,6 @@ int	check_delta(t_map *map, int row, int col)
 	char				c;
 	int					index;
 
-	c = '\0';
 	index = 0;
 	matrix = map->cmap;
 	while (index < 4)
@@ -391,6 +412,8 @@ int	check_delta(t_map *map, int row, int col)
 		{
 			if (matrix[row][col] == map->dir_ch)
 				return (FALSE);
+			//printf("%s, %c\n", matrix[row + delta[0][index]], c);
+			//printf("%d, %d\n", col + delta[1][index], (int)ft_strlen(matrix[row + delta[0][index]]));
 			return (TRUE);
 		}
 		++index;
@@ -403,9 +426,14 @@ int	any_empty(t_map *map, int row, int col)
 	char	**matrix;
 
 	matrix = map->cmap;
+	//	return (matrix[row][col] != map->dir_ch);
 	if (row == 0 || col == 0 || row == map->height - 1
 		|| col == ((int)ft_strlen(matrix[row]) - 1))
-		return (matrix[row][col] != map->dir_ch);
+	{
+		if (matrix[row][col] == map->dir_ch)
+			return (FALSE);
+		return (TRUE);
+	}
 	return (check_delta(map, row, col));
 }
 
@@ -423,15 +451,20 @@ int	check_wall(t_map *map)
 			if (ft_isspace(map->cmap[row][col]))
 			{
 				if (not_empty(map, row, col) == TRUE)
-					return (FALSE);
+					return (FAILURE);
 			}
+			// 반환 값이 참이면 안
 			else if (any_empty(map, row, col) == TRUE)
-				return (FALSE);
+			{
+				printf("6\n");
+				return (FAILURE);
+			}
 			++col;
 		}
 		++row;
 	}
-	return (TRUE);
+	printf("7\n");
+	return (SUCCESS);
 }
 
 int	is_valid_map(t_map *map)
@@ -447,10 +480,15 @@ int	is_valid_map(t_map *map)
 			++col;
 		if (col == (int)ft_strlen(map->cmap[row]))
 			return (FALSE);
+		printf("%d %d\n", row, col);
 		while (col < (int)ft_strlen(map->cmap[row]))
 		{
-			if (map->cmap[row][col] == '1' && not_empty(map, row, col))
+				// 주변에 빈 곳이 없는지 확
+			if (map->cmap[row][col] == '1' && !not_empty(map, row, col))
+			{
+				printf("%s %d %d\n", map->cmap[row], row, col);
 				dfs(map, row, col, map->cmap);
+			}
 			++col;
 		}
 		++row;
@@ -497,12 +535,11 @@ int	set_map(t_map *map, t_node *list)
 		return (FAILURE);
 	if (set_player_info(map) == FAILURE)
 		return (FAILURE);
-	printf("3\n");
-	if (is_valid_map(map) == FALSE)
+	if (is_valid_map(map) == FAILURE)
 		return (FAILURE);
-	printf("4\n");
 	map->floor = get_color(map->info[F]);
 	map->ceiling = get_color(map->info[C]);
+	printf("7\n");
 	return (SUCCESS);
 }
 
@@ -531,7 +568,7 @@ int	set_map_info(t_map *map, int fd)
 		error_exit("Failed set map\n", 1);
 	while (line)
 	{
-		if (is_empty(line) == TRUE || lstadd_node(&list, line) == FAILURE)
+		if (ft_strtrim(line) || lstadd_node(&list, line) == FAILURE)
 		{
 			free_list(list);
 			return (FAILURE);
