@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 16:11:38 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/12/06 18:13:05 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/12/10 20:57:20 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,7 +188,7 @@ void	test(t_map *map)
 	int i = 0;
 	while (i < 8)
 	{
-		printf("%s", map->info[i]);
+		printf("%s\n", map->info[i]);
 		i++;
 	}
 }
@@ -373,7 +373,7 @@ void	dfs(t_map *map, int row, int col, char **cmap)
 	}
 }
 
-int	not_empty(t_map *map, int row, int col)
+int	is_fence(t_map *map, int row, int col)
 {
 	static const int	delta[2][4] = {{0, 0, 1, -1}, {1, -1, 0, 0}};
 	size_t				index;
@@ -382,18 +382,18 @@ int	not_empty(t_map *map, int row, int col)
 	matrix = map->cmap;
 	if (row == 0 || col == 0 || row == map->height - 1
 			|| col == (int)ft_strlen(matrix[row]) - 1)
-		return (FALSE);
+		return (TRUE);
 	index = 0;
 	while (index < 4)
 	{
 		if (ft_isspace(matrix[row + delta[0][index]][col + delta[1][index]]))
-			return (FALSE);
+			return (TRUE);
 		++index;
 	}
-	return (TRUE);
+	return (FALSE);
 }
 
-int	check_delta(t_map *map, int row, int col)
+int	is_delta_empty(t_map *map, int row, int col)
 {
 	static const int	delta[2][4] = {{0, 0, 1, -1}, {1, -1, 0, 0}};
 	char				**matrix;
@@ -412,8 +412,7 @@ int	check_delta(t_map *map, int row, int col)
 		{
 			if (matrix[row][col] == map->dir_ch)
 				return (FALSE);
-			//printf("%s, %c\n", matrix[row + delta[0][index]], c);
-			//printf("%d, %d\n", col + delta[1][index], (int)ft_strlen(matrix[row + delta[0][index]]));
+			printf("%d %d %c\n",row + delta[0][index], col + delta[1][index],  matrix[row][col]);
 			return (TRUE);
 		}
 		++index;
@@ -421,23 +420,27 @@ int	check_delta(t_map *map, int row, int col)
 	return (FALSE);
 }
 
-int	any_empty(t_map *map, int row, int col)
+int	is_valid_wall(t_map *map, int row, int col)
 {
 	char	**matrix;
 
 	matrix = map->cmap;
-	//	return (matrix[row][col] != map->dir_ch);
 	if (row == 0 || col == 0 || row == map->height - 1
 		|| col == ((int)ft_strlen(matrix[row]) - 1))
 	{
 		if (matrix[row][col] == map->dir_ch)
-			return (FALSE);
-		return (TRUE);
+			return (TRUE);
+		return (FALSE);
 	}
-	return (check_delta(map, row, col));
+	if (is_delta_empty(map, row, col) == TRUE)
+	{
+		return (FALSE);
+	}
+	return (TRUE);
 }
 
-int	check_wall(t_map *map)
+// 
+int	check_fence(t_map *map)
 {
 	int	row;
 	int	col;
@@ -450,24 +453,23 @@ int	check_wall(t_map *map)
 		{
 			if (ft_isspace(map->cmap[row][col]))
 			{
-				if (not_empty(map, row, col) == TRUE)
+				if (is_fence(map, row, col) == FALSE)
+				{
+					//테스트
+					printf("it happen?\n");
 					return (FAILURE);
+				}
 			}
-			// 반환 값이 참이면 안
-			else if (any_empty(map, row, col) == TRUE)
-			{
-				printf("6\n");
+			else if (is_valid_wall(map, row, col) == FALSE)
 				return (FAILURE);
-			}
 			++col;
 		}
 		++row;
 	}
-	printf("7\n");
 	return (SUCCESS);
 }
 
-int	is_valid_map(t_map *map)
+void	change_fence_ch(t_map *map)
 {
 	int	row;
 	int	col;
@@ -476,24 +478,78 @@ int	is_valid_map(t_map *map)
 	while (row < map->height)
 	{
 		col = 0;
-		while (map->cmap[row][col] && map->cmap[row][col] == ' ')
-			++col;
-		if (col == (int)ft_strlen(map->cmap[row]))
-			return (FALSE);
-		printf("%d %d\n", row, col);
+		// not needed
+		//while (map->cmap[row][col] && map->cmap[row][col] == ' ')
+			//++col;
+		//if (col == (int)ft_strlen(map->cmap[row]))
+			//return (FALSE);
 		while (col < (int)ft_strlen(map->cmap[row]))
 		{
-				// 주변에 빈 곳이 없는지 확
-			if (map->cmap[row][col] == '1' && !not_empty(map, row, col))
-			{
-				printf("%s %d %d\n", map->cmap[row], row, col);
+			if (map->cmap[row][col] == '1' && is_fence(map, row, col) == TRUE)
 				dfs(map, row, col, map->cmap);
-			}
 			++col;
 		}
 		++row;
 	}
-	return (check_wall(map));
+}
+
+void	test_convert_map(t_map *map)
+{
+	int row = 0;
+
+	while (map->cmap[row])
+	{
+		printf("%s %c\n", map->cmap[row], map->cmap[row][0]);
+		++row;
+	}
+}
+
+int	is_valid_fence(t_map *map)
+{
+	change_fence_ch(map);
+	test_convert_map(map);
+	printf("3\n");
+	if (check_fence(map) == FAILURE)
+		return (FALSE);
+	printf("4\n");
+	return (TRUE);
+
+}
+
+int	is_empty_str(char *str)
+{
+	int	index;
+
+	index = 0;
+	while (str[index] || ft_isspace(str[index]))
+		++index;
+	if (str[index] == '\0')
+		return (FALSE);
+	return (TRUE);
+}
+
+int	any_empty_line(t_map *map)
+{
+	int	row;
+
+	row = 0;
+	while (row < map->height)
+	{
+		if (is_empty_str(map->cmap[row]) == TRUE)
+			return (TRUE);
+		++row;
+	}
+	return (FALSE);
+}
+
+int	is_valid_map(t_map *map)
+{
+	if (any_empty_line(map) == TRUE)
+		return (FALSE);
+	if (is_valid_fence(map) == FALSE)
+		return (FALSE);
+	printf("5\n");
+	return (TRUE);
 }
 
 int	get_color(char *info)
@@ -501,26 +557,26 @@ int	get_color(char *info)
 	char	**token;
 	int		index;
 	int		value;
-	int		ret;
+	int		result;
 
 	token = ft_split(info, ',');
 	index = 0;
 	while (token[index])
 		++index;
-	if (index != 4)
+	if (index != 3)
 		error_exit("Color not valid\n", 1);
 	index = 0;
-	ret = 0;
+	result = 0;
 	while (index < 3)
 	{
 		value = ft_atoi(token[index]);
 		if (value == -1)
 			error_exit("Color not valid\n", 1);
-		ret = (ret << 8) | value;
+		result = (result << 8) | value;
 		++index;
 	}
 	free_double_pointer(token);
-	return (ret);
+	return (result);
 }
 
 int	set_map(t_map *map, t_node *list)
@@ -535,11 +591,10 @@ int	set_map(t_map *map, t_node *list)
 		return (FAILURE);
 	if (set_player_info(map) == FAILURE)
 		return (FAILURE);
-	if (is_valid_map(map) == FAILURE)
+	if (is_valid_map(map) == FALSE)
 		return (FAILURE);
 	map->floor = get_color(map->info[F]);
 	map->ceiling = get_color(map->info[C]);
-	printf("7\n");
 	return (SUCCESS);
 }
 
@@ -621,6 +676,7 @@ int	init_map(t_map *map, char *file)
 {
 	int	fd;
 
+	test(map);
 	fd = get_fd(file);
 	if (fd == FAILURE)
 		error_exit("Can't open file error\n", 1);
