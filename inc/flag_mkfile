@@ -6,7 +6,7 @@
 #    By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/10 22:32:06 by wooseoki          #+#    #+#              #
-#    Updated: 2023/12/11 15:39:59 by wooseoki         ###   ########.fr        #
+#    Updated: 2023/12/11 20:26:20 by wooseoki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,11 +22,14 @@ RMFLAGS		= -rf
 LIBFT		= libft/libft.a
 LIB_DIR		= libft
 
+MLX			= mlx/libmlx.a
+MLX_DIR		= mlx
+
 ALL_SRCS	= $(PAR_SRCS) src/main.c
 ALL_OBJS	= $(PAR_OBJS) obj/main.o
 
 obj/main.o : src/main.c
-	$(CC) -c $(CFLAGS) $< -o $@ $(CPPFLAGS) -g
+	@$(CC) -c $(CFLAGS) $< -o $@ $(CPPFLAGS) -g
 
 OBJ_DIR		= obj obj/parse
 SRC_DIR		= src src/parse
