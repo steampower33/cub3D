@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 21:50:50 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/12/10 22:58:47 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/12/11 20:01:49 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,14 @@ static int	**set_matrix(t_map *map)
 	result = (int **)malloc(sizeof(int *) * map->height);
 	if (result == NULL)
 		return (NULL);
+	ft_bzero(result, sizeof(int *) * map->height);
 	index = 0;
 	while (index < map->height)
 	{
 		result[index] = (int *)malloc(sizeof(int) * map->width);
 		if (result[index] == NULL)
 			error_exit("Set matrix failed\n", 1);
+		ft_memset(result[index], -1, sizeof(int) * map->width);
 		str_to_int(result[index], map->cmap[index], map->dir_ch);
 		++index;
 	}
@@ -99,12 +101,12 @@ int	set_map(t_map *map, t_node *list)
 		return (FAILURE);
 	map->height = get_length(list);
 	map->width = get_width(map->cmap);
-	map->matrix = set_matrix(map);
-	if (map->matrix == NULL)
-		return (FAILURE);
-	if (set_player_info(map) == FAILURE)
+		if (set_player_info(map) == FAILURE)
 		return (FAILURE);
 	if (is_valid_map(map) == FALSE)
+		return (FAILURE);
+	map->matrix = set_matrix(map);
+	if (map->matrix == NULL)
 		return (FAILURE);
 	map->floor = get_color(map->info[F]);
 	map->ceiling = get_color(map->info[C]);

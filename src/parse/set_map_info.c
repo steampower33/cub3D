@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 21:49:23 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/12/10 22:48:51 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/12/11 16:48:51 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	set_map_info(t_map *map, int fd)
 		error_exit("Can't read map content\n", 1);
 	while (line)
 	{
-		if (ft_strtrim(line) == SUCCESS || lstadd_node(&list, line) == FAILURE)
+		if (ft_strtrim(line) == FAILURE || lstadd_node(&list, line) == FAILURE)
 		{
 			free_list(list);
 			return (FAILURE);

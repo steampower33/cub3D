@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 16:52:15 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/12/06 16:54:18 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/12/11 19:48:42 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef LIBFT_H
@@ -27,4 +27,5 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
 char	**ft_split(char const *s, char c);
 void	ft_bzero(void *s, size_t n);
+void	*ft_memset(void *b, int c, size_t len);
 #endif

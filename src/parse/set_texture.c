@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 21:44:23 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/12/10 22:17:19 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/12/11 16:46:58 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,8 @@ int	set_texture_info(t_map *map, int fd)
 		++index;
 	}
 	if (index != INFO_LINE)
-		return (SUCCESS);
+		return (FAILURE);
 	if (line != NULL)
 		free(line);
-	return (FAILURE);
+	return (SUCCESS);
 }

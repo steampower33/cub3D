@@ -6,7 +6,7 @@
 #    By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/27 17:17:38 by wooseoki          #+#    #+#              #
-#    Updated: 2023/12/10 22:44:43 by wooseoki         ###   ########.fr        #
+#    Updated: 2023/12/11 16:08:51 by wooseoki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,13 +21,12 @@ $(LIBFT) :
 all : $(OBJ_DIR) $(LIBFT) $(NAME)
 
 $(NAME) : $(ALL_OBJS)
-	$(CC) $(CFLAGS) $(LIBFT) $^ -o $@
+	$(CC) $(CFLAGS) $(LIBFT) $^ -o $@ -g
 
 $(MLX) :
 	$(MAKE) -I $(INC_DIR) -I ../libft/ -C $(LIBFT) $(MLX_DIR)
 
 $(OBJ_DIR) :
-	$(RM) $(RMFLAGS) $(OBJ_DIR)
 	@mkdir -p $(OBJ_DIR)
 
 clean :

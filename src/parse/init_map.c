@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 21:43:17 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/12/10 22:16:39 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/12/11 20:04:31 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,7 @@ int	init_map(t_map *map, char *file)
 	if (set_map_info(map, fd) == FAILURE)
 		error_exit("Set map info failed\n", 1);
 	init_player(map);
-	//test_convert_map(map);
 	mirror(map);
-	//test_convert_map(map);
-	// test
-	//test(map);
 	close(fd);
 	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 22:12:28 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/12/10 22:59:11 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/12/11 19:57:26 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,14 +77,14 @@ void	free_double_pointer(char **string)
 
 void	str_to_int(int *dest, char *src, char p)
 {
-	size_t	index;
+	int	index;
 
 	index = 0;
 	while (src[index])
 	{
 		if (src[index] == p)
 			dest[index] = 1;
-		else if (ft_isdigit(src[index]) == TRUE)
+		else if (ft_isdigit(src[index]))
 			dest[index] = (int)(src[index] - '0');
 		++index;
 	}
