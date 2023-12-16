@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: seunlee2 <seunlee2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 16:20:41 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/12/16 16:34:37 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/12/16 17:57:07 by seunlee2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,6 @@ typedef struct s_map
 	int		**matrix;
 	char	*info[8];
 	char	**cmap;
+}	t_map;
 
-}t_map;
 #endif

@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   parse.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: seunlee2 <seunlee2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 22:18:03 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/12/16 16:32:43 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/12/16 18:22:58 by seunlee2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #ifndef PARSE_H
 # define PARSE_H
 

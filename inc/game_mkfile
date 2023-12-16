@@ -1,35 +1,29 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    flag_mkfile                                        :+:      :+:    :+:    #
+#    game_mkfile                                        :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: seunlee2 <seunlee2@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/12/10 22:32:06 by wooseoki          #+#    #+#              #
-#    Updated: 2023/12/16 18:01:57 by seunlee2         ###   ########.fr        #
+#    Created: 2023/12/15 17:00:09 by seunlee2          #+#    #+#              #
+#    Updated: 2023/12/16 18:30:30 by seunlee2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME		= cub3D
+GAME_DIR = src/game
+GAME_SRC =	game_loop.c \
+			img.c \
+			init.c \
+			key_event.c \
+			key_hook.c \
+			key_hook_util.c \
+			raycasting_util.c \
+			raycasting.c \
+					
+GAME_OBJ_DIR	= obj/game
+GAME_OBJ		= $(GAME_SRC:.c=.o)
+GAME_OBJS	= $(addprefix $(GAME_OBJ_DIR)/, $(GAME_OBJ))
+GAME_SRCS	= $(addprefix $(GAME_DIR)/, $(GAME_SRC))
 
-CC			= cc
-GFLAG		= g
-CFLAGS		= -Wall -Wextra -Werror
-CPPFLAGS	= -I inc
-RM			= rm
-RMFLAGS		= -rf
-
-LIBFT		= libft/libft.a
-LIB_DIR		= libft
-
-MLX			= mlx/libmlx.a
-MLX_DIR		= mlx
-
-ALL_SRCS	= $(PAR_SRCS) $(GAME_SRCS) src/main.c
-ALL_OBJS	= $(PAR_OBJS) $(GAME_OBJS) obj/main.o
-
-obj/main.o : src/main.c
+$(GAME_OBJ_DIR)/%.o : $(GAME_DIR)/%.c
 	@$(CC) -c $(CFLAGS) $< -o $@ $(CPPFLAGS) -g
-
-OBJ_DIR		= obj obj/parse obj/game
-SRC_DIR		= src src/parse src/game
