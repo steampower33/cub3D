@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 22:00:11 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/12/10 22:51:50 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/12/16 16:15:48 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ static void	change_fence_ch(t_map *map)
 		col = 0;
 		while (map->cmap[row][col] && map->cmap[row][col] == ' ')
 			++col;
-		// need modift return
 		if (col == (int)ft_strlen(map->cmap[row]))
 			return ;
 		while (col < (int)ft_strlen(map->cmap[row]))

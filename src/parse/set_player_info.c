@@ -6,13 +6,13 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 21:59:21 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/12/10 22:00:04 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/12/16 16:16:53 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 
-static void	set_player(t_map *map, char** row, char *col)
+static void	set_player(t_map *map, char **row, char *col)
 {
 	map->dir_ch = *col;
 	*col = '0';

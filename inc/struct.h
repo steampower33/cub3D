@@ -6,25 +6,26 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 16:20:41 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/12/11 19:11:51 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/12/16 16:34:37 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCT_H
 # define STRUCT_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include <math.h>
-#include "../libft/libft.h"
-#include "../libft/get_next_line.h"
+# include <stdio.h>
+# include <stdlib.h>
+# include <fcntl.h>
+# include <math.h>
+# include "../libft/libft.h"
+# include "../libft/get_next_line.h"
 
-#define FAILURE		-1
-#define SUCCESS		1
-#define TRUE		1
-#define	FALSE		0
-#define INFO_LINE 	6
+# define AS_COUNT	3
+# define FAILURE	-1
+# define SUCCESS	1
+# define TRUE		1
+# define FALSE		0
+# define INFO_LINE 	6
 
 enum	e_type
 {
@@ -50,9 +51,9 @@ enum	e_dir
 	K_RIGHT = 124
 };
 
-typedef struct	s_node
+typedef struct s_node
 {
-	char*			content;
+	char			*content;
 	struct s_node	*next;
 }t_node;
 

@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 16:11:38 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/12/11 21:01:27 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/12/16 16:52:02 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,30 +45,14 @@ void	test_convert_map(t_map *map)
 	printf("======================test map===========================\n");
 }
 
-int	set_assets(t_mlx *mlx, t_map *map)
-{
-	
-}
-
-void	set_mlx(t_mlx *mlx, t_map *map)
-{
-	mlx->mlx = mlx_init();
-	mlx->window = mlx_newwindow(mlx->mlx, W_WIDTH, W_HEIGHT, "cub3D");
-	set_assets(mlx, map);
-}
-
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	t_map	map;
-	t_mlx	mlx;
 
 	ft_bzero(&map, sizeof(map));
 	if (argc != 2)
-	{
-		printf("usage: ./cub3D [map file]\n");
-		return (1);
-	}
+		error_exit("usage: ./cub3d [map file]\n", 1);
 	init_map(&map, argv[1]);
-	set_mlx(&mlx, &map);
-	test_convert_map(&map);
+	system("leaks --list -- cub3D");
+	//test_convert_map(&map);
 }

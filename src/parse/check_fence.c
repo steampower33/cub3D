@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 22:09:06 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/12/10 22:52:09 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/12/16 16:14:04 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ static int	is_delta_empty(t_map *map, int row, int col)
 	matrix = map->cmap;
 	while (index < 4)
 	{
-		if (col + delta[1][index] >= (int)ft_strlen(matrix[row + delta[0][index]]))
+		if (col + delta[1][index] >= \
+			(int)ft_strlen(matrix[row + delta[0][index]]))
 			c = ' ';
 		else
 			c = matrix[row + delta[0][index]][col + delta[1][index]];
@@ -65,7 +66,7 @@ int	is_fence(t_map *map, int row, int col)
 
 	matrix = map->cmap;
 	if (row == 0 || col == 0 || row == map->height - 1
-			|| col == (int)ft_strlen(matrix[row]) - 1)
+		|| col == (int)ft_strlen(matrix[row]) - 1)
 		return (TRUE);
 	index = 0;
 	while (index < 4)

@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 21:50:50 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/12/11 20:01:49 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/12/16 16:54:30 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,6 @@ static int	get_color(char *info)
 	}
 	free_double_pointer(token);
 	return (result);
-}
-
-int	get_length(t_node *list)
-{
-	t_node	*node;
-	int		len;
-
-	node = list;
-	len = 0;
-	while (node)
-	{
-		++len;
-		node = node->next;
-	}
-	return (len);
 }
 
 static int	get_width(char **line)
@@ -101,7 +86,7 @@ int	set_map(t_map *map, t_node *list)
 		return (FAILURE);
 	map->height = get_length(list);
 	map->width = get_width(map->cmap);
-		if (set_player_info(map) == FAILURE)
+	if (set_player_info(map) == FAILURE)
 		return (FAILURE);
 	if (is_valid_map(map) == FALSE)
 		return (FAILURE);
@@ -110,5 +95,6 @@ int	set_map(t_map *map, t_node *list)
 		return (FAILURE);
 	map->floor = get_color(map->info[F]);
 	map->ceiling = get_color(map->info[C]);
+	free_list(list);
 	return (SUCCESS);
 }

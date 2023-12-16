@@ -6,15 +6,15 @@
 #    By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/10 22:21:03 by wooseoki          #+#    #+#              #
-#    Updated: 2023/12/11 20:26:27 by wooseoki         ###   ########.fr        #
+#    Updated: 2023/12/16 16:22:50 by wooseoki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 PAR_DIR		= src/parse
 PAR_SRC		= \
-			init_map.c init_player.c is_valid_map.c \
-			set_map.c set_map_info.c set_player_info.c set_texture.c \
-			check_fence.c mirror.c utils.c \
+			init_map.c is_valid_map.c set_player_info.c\
+			set_map.c set_map_info.c set_texture.c \
+			check_fence.c utils.c utils2.c\
 
 PAR_OBJ_DIR	= obj/parse
 PAR_OBJ		= $(PAR_SRC:.c=.o)

@@ -6,7 +6,7 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 21:43:17 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/12/11 20:04:31 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/12/16 16:31:27 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,6 @@ static void	init_player(t_map *map)
 	map->plain_col = 0.67;
 	map->dir_row = -1;
 	map->dir_col = 0;
-	/*
-	if (map->dir_ch == 'S')
-		change_dir(map, K_RIGHT, M_PI_2);
-	else if (map->dir_ch == 'W')
-		change_dir(map, K_RIGHT, M_PI_2 * 2);
-	else if (map->dir_ch == 'N')
-		change_dir(map, K_RIGHT, M_PI_2 * 3);
-		*/
 }
 
 static void	mirror(t_map *map)
@@ -42,7 +34,7 @@ static void	mirror(t_map *map)
 		{
 			temp = map->matrix[row][col];
 			map->matrix[row][col] = map->matrix[row][map->width - col - 1];
-			map->matrix[row][map->width -col - 1] = temp;
+			map->matrix[row][map->width - col - 1] = temp;
 			++col;
 		}
 		++row;

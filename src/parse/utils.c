@@ -6,74 +6,11 @@
 /*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 22:12:28 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/12/11 19:57:26 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/12/16 16:56:42 by wooseoki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
-
-int	is_valid_file_name(char *file)
-{
-	char	*extens;
-
-	extens = file;
-	while (extens)
-	{
-		if (*extens == '.')
-			break;
-		++extens;
-	}
-	if (*extens != '.' || ft_strlen(extens) != 4)
-		return (FALSE);
-	if (extens[1] != 'c' || extens[2] != 'u' || extens[3] != 'b')
-		return (FALSE);
-	return (TRUE);
-}
-
-char	**list_to_str(t_node *list)
-{
-	char		**result;
-	t_node		*node;
-	size_t		index;
-
-	node = list;
-	result = (char **)malloc(sizeof(char *) * (get_length(list) + 1));
-	if (result == NULL)
-		return (NULL);
-	index = 0;
-	while (node)
-	{
-		result[index] = ft_strdup(node->content);
-		if (result[index] == NULL)
-		{
-			free_double_pointer(result);
-			return (NULL);
-		}
-		node = node->next;
-		++index;
-	}
-	result[index] = NULL;
-	return (result);
-}
-
-void	error_exit(char *message, int status)
-{
-	printf("%s", message);
-	exit(status);
-}
-
-void	free_double_pointer(char **string)
-{
-	size_t	index;
-
-	index = 0;
-	while (string[index])
-	{
-		free(string[index]);
-		++index;
-	}
-	free(string);
-}
 
 void	str_to_int(int *dest, char *src, char p)
 {
@@ -108,6 +45,7 @@ void	free_list(t_node *list)
 	{
 		node = list;
 		list = list->next;
+		free(node->content);
 		free(node);
 	}
 }
@@ -127,7 +65,7 @@ int	is_empty(char *line)
 	return (FALSE);
 }
 
-int ft_strtrim(char *str)
+int	ft_strtrim(char *str)
 {
 	int		index;
 
