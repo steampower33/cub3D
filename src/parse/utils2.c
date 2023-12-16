@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wooseoki <wooseoki@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: seunlee2 <seunlee2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 16:19:44 by wooseoki          #+#    #+#             */
-/*   Updated: 2023/12/16 16:24:40 by wooseoki         ###   ########.fr       */
+/*   Updated: 2023/12/16 20:05:02 by seunlee2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ char	**list_to_str(t_node *list)
 
 void	error_exit(char *message, int status)
 {
+	write(2, "Error\n", 6);
 	write(2, message, ft_strlen(message));
 	write(2, "\n", 1);
 	exit(status);
