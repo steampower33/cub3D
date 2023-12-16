@@ -6,7 +6,7 @@
 /*   By: seunlee2 <seunlee2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 20:42:16 by seunlee2          #+#    #+#             */
-/*   Updated: 2023/12/16 19:30:14 by seunlee2         ###   ########.fr       */
+/*   Updated: 2023/12/16 21:09:18 by seunlee2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	fill_texture(t_img *img, int idx)
 		w = 0;
 		while (w < img->w)
 		{
-			img->texture[idx][img->w * h + w] = img->data[img->h * h + w];
+			img->texture[idx][img->w * h + w] = img->data[img->w * h + w];
 			w++;
 		}
 		h++;
