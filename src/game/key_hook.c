@@ -6,7 +6,7 @@
 /*   By: seunlee2 <seunlee2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 16:22:51 by seunlee2          #+#    #+#             */
-/*   Updated: 2023/12/16 18:41:51 by seunlee2         ###   ########.fr       */
+/*   Updated: 2023/12/16 19:43:27 by seunlee2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	key_hook_r(t_player *p)
 		p->plane_x * sin(p->rot_speed) + p->plane_y * cos(p->rot_speed);
 }
 
-int	key_hook(t_game *game)
+void	key_hook(t_game *game)
 {
 	if (game->p.move.key_w)
 		key_hook_w(&game->p, &game->map);
@@ -46,5 +46,4 @@ int	key_hook(t_game *game)
 		key_hook_l(&game->p);
 	if (game->p.move.key_r)
 		key_hook_r(&game->p);
-	return (1);
 }

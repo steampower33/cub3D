@@ -6,7 +6,7 @@
 /*   By: seunlee2 <seunlee2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 20:37:15 by seunlee2          #+#    #+#             */
-/*   Updated: 2023/12/16 18:23:24 by seunlee2         ###   ########.fr       */
+/*   Updated: 2023/12/16 19:41:20 by seunlee2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	key_press(int keycode, t_game *game)
 	if (keycode == KEY_RIGHT)
 		game->p.move.key_r = 1;
 	if (keycode == KEY_ESC)
-		exit (0);
+		key_exit(game);
 	return (0);
 }
 
@@ -45,6 +45,8 @@ int	key_release(int keycode, t_game *game)
 		game->p.move.key_l = 0;
 	if (keycode == KEY_RIGHT)
 		game->p.move.key_r = 0;
+	if (keycode == KEY_ESC)
+		key_exit(game);
 	return (0);
 }
 

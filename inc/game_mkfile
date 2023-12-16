@@ -6,7 +6,7 @@
 #    By: seunlee2 <seunlee2@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/15 17:00:09 by seunlee2          #+#    #+#              #
-#    Updated: 2023/12/16 18:30:30 by seunlee2         ###   ########.fr        #
+#    Updated: 2023/12/16 19:35:35 by seunlee2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ GAME_SRC =	game_loop.c \
 			key_hook_util.c \
 			raycasting_util.c \
 			raycasting.c \
+			error.c \
 					
 GAME_OBJ_DIR	= obj/game
 GAME_OBJ		= $(GAME_SRC:.c=.o)

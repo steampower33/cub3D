@@ -6,7 +6,7 @@
 /*   By: seunlee2 <seunlee2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 20:42:57 by seunlee2          #+#    #+#             */
-/*   Updated: 2023/12/16 19:28:35 by seunlee2         ###   ########.fr       */
+/*   Updated: 2023/12/16 19:40:41 by seunlee2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	init_img_more(t_img *img)
 	}
 	img->texture = (int **)malloc(sizeof(int *) * 4);
 	if (!(img->texture))
-		return ;
+		error_handler("malloc error", 1);
 	i = 0;
 	while (i < 4)
 	{
@@ -94,17 +94,22 @@ void	init_player(t_game *game, t_player *p)
 	p->rot_speed = 0.05;
 }
 
-void	init_game(t_game *game)
+void	init_game(t_game *game, t_img *img)
 {
-	t_img	*img;
-
-	img = &game->img;
 	game->mlx = mlx_init();
+	if (!game->mlx)
+		error_handler("mlx init error", 1);
 	game->win = mlx_new_window(game->mlx, SCREENWIDTH, SCREENHEIGHT, "cub3D");
+	if (!game->win)
+		error_handler("make mlx window error", 1);
 	init_img(&game->img);
 	init_player(game, &game->p);
 	set_wall_img(game, &game->img, &game->map, 0);
 	img->image = mlx_new_image(game->mlx, SCREENWIDTH, SCREENHEIGHT);
+	if (!img->image)
+		error_handler("make mlx image error", 1);
 	img->data = (int *)mlx_get_data_addr \
 		(img->image, &img->bpp, &img->line_size, &img->endian);
+	if (!img->data)
+		error_handler("get mlx data error", 1);
 }

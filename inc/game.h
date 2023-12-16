@@ -6,7 +6,7 @@
 /*   By: seunlee2 <seunlee2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 16:57:12 by seunlee2          #+#    #+#             */
-/*   Updated: 2023/12/16 19:19:46 by seunlee2         ###   ########.fr       */
+/*   Updated: 2023/12/16 19:43:49 by seunlee2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,9 @@ typedef struct s_game
 	t_mapinfo	map;
 }	t_game;
 
-void	init_game(t_game *game);
+void	error_handler(char *message, int status);
+
+void	init_game(t_game *game, t_img *img);
 void	init_player(t_game *game, t_player *p);
 void	set_player_dir_plain(t_game *game, t_player *p);
 void	init_img(t_img *img);
@@ -143,7 +145,7 @@ void	key_hook_a(t_player *p, t_mapinfo *map);
 void	key_hook_d(t_player *p, t_mapinfo *map);
 void	key_hook_l(t_player *p);
 void	key_hook_r(t_player *p);
-int		key_hook(t_game *game);
+void	key_hook(t_game *game);
 
 int		key_press(int keycode, t_game *game);
 int		key_release(int keycode, t_game *game);
