@@ -1,6 +1,7 @@
 # Cub3D
 
 <img width="961" alt="스크린샷 2024-01-20 오후 2 54 14" src="https://github.com/steampower33/cub3D/assets/20227720/91ca9845-3093-49b1-8ae5-9c65794e9798">
+
 2차원 배열의 맵에 3차원의 공간감을 적용하는 기술인 raycasting 구현
 
 # How To Start
