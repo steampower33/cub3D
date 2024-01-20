@@ -19,4 +19,5 @@ work with kimwoo123
 original github source : https://github.com/kimwoo123/cub3d
 
 parsing : kimwoo123
+
 game & raycasting : steampower33
