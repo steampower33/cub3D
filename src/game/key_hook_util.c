@@ -14,22 +14,18 @@
 
 void	key_hook_w(t_player *p, t_mapinfo *map)
 {
-	if (!map->matrix[(int)(p->pos_y + p->dir_y * p->move_speed * WALLDIST)] \
-		[(int)(p->pos_x + p->dir_x * p->move_speed * WALLDIST)])
-	{
-		p->pos_x += p->dir_x * p->move_speed;
+	if (!map->matrix[(int)(p->pos_y + p->dir_y * p->move_speed * WALLDIST)][(int)p->pos_x])
 		p->pos_y += p->dir_y * p->move_speed;
-	}
+	if (!map->matrix[(int)p->pos_y][(int)(p->pos_x + p->dir_x * p->move_speed * WALLDIST)])
+		p->pos_x += p->dir_x * p->move_speed;
 }
 
 void	key_hook_s(t_player *p, t_mapinfo *map)
 {
-	if (!map->matrix[(int)(p->pos_y - p->dir_y * p->move_speed * WALLDIST)] \
-		[(int)(p->pos_x - p->dir_x * p->move_speed * WALLDIST)])
-	{
-		p->pos_x -= p->dir_x * p->move_speed;
+	if (!map->matrix[(int)(p->pos_y - p->dir_y * p->move_speed * WALLDIST)][(int)p->pos_x])
 		p->pos_y -= p->dir_y * p->move_speed;
-	}
+	if (!map->matrix[(int)p->pos_y][(int)(p->pos_x - p->dir_x * p->move_speed * WALLDIST)])
+		p->pos_x -= p->dir_x * p->move_speed;
 }
 
 void	key_hook_a(t_player *p, t_mapinfo *map)

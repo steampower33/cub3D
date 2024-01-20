@@ -14,22 +14,28 @@
 
 void	key_hook_l(t_player *p)
 {
+	double old_dir_x = p->dir_x;
 	p->dir_x = p->dir_x * cos(-p->rot_speed) - p->dir_y * sin(-p->rot_speed);
-	p->dir_y = p->dir_x * sin(-p->rot_speed) + p->dir_y * cos(-p->rot_speed);
+	p->dir_y = old_dir_x * sin(-p->rot_speed) + p->dir_y * cos(-p->rot_speed);
+	
+	double old_plane_x = p->plane_x;
 	p->plane_x = \
 		p->plane_x * cos(-p->rot_speed) - p->plane_y * sin(-p->rot_speed);
 	p->plane_y = \
-		p->plane_x * sin(-p->rot_speed) + p->plane_y * cos(-p->rot_speed);
+		old_plane_x * sin(-p->rot_speed) + p->plane_y * cos(-p->rot_speed);
 }
 
 void	key_hook_r(t_player *p)
 {
+	double old_dir_x = p->dir_x;
 	p->dir_x = p->dir_x * cos(p->rot_speed) - p->dir_y * sin(p->rot_speed);
-	p->dir_y = p->dir_x * sin(p->rot_speed) + p->dir_y * cos(p->rot_speed);
+	p->dir_y = old_dir_x * sin(p->rot_speed) + p->dir_y * cos(p->rot_speed);
+
+	double old_plane_x = p->plane_x;
 	p->plane_x = \
 		p->plane_x * cos(p->rot_speed) - p->plane_y * sin(p->rot_speed);
 	p->plane_y = \
-		p->plane_x * sin(p->rot_speed) + p->plane_y * cos(p->rot_speed);
+		old_plane_x * sin(p->rot_speed) + p->plane_y * cos(p->rot_speed);
 }
 
 void	key_hook(t_game *game)
