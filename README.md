@@ -12,3 +12,11 @@ make && ./cub3D map_dir/1.cub
 
 w,a,s,d으로 움직이고, 방향키 왼쪽, 오른쪽 키를 이용해서 시야를 좌, 우로 전환한다.
 ESC 및 윈도우 창 X 버튼을 클릭하면 게임이 종료된다.
+
+# 협업
+work with kimwoo123
+
+original github source : https://github.com/kimwoo123/cub3d
+
+parsing : kimwoo123
+game & raycasting : steampower33
